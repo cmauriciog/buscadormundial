@@ -10,16 +10,19 @@
 <script src="https://cdn.maptiler.com/maptiler-geocoding-control/v1.3.3/leaflet.umd.js"></script>
 <link href="https://cdn.maptiler.com/maptiler-geocoding-control/v1.3.3/style.css" rel="stylesheet">
 <style>
-body {
-margin: 0;
-padding: 0;
-}
-#map {
-position: absolute;
-top: 20;
-bottom: 0;
-width: 100%;
-height: 80%;
+	body {
+	margin: 0;
+	padding: 0;
+	}
+	dialog {
+		overflow: auto;
+	}
+	#map {
+	position: absolute;
+	top: 20;
+	bottom: 0;
+	width: 100%;
+	height: 80%;
     }
 	#encabezado {
 		top: 0;
@@ -60,18 +63,44 @@ height: 80%;
 		¿Cómo se usa? Muy sencillo: escribí lo que deseás buscar en la barra de la lupita y listo.
 		Podés buscar una calle, un distrito, un departamento, una provincia o un país.-
 	</div>
+	<div style="text-align: right">
+		<img src="Informacion.jpg" height="50px" title="Más información" onClick="MasInformacion()"/>
+	</div>
+	<!--Modal para brindar detalles sobre el mapa-->
+	<dialog id="modal_informativo" style="text-align: center; background-color:yellow">
+		<div id="Informacion" style="font-family: Verdana, Geneva, Tahoma, Arial, sans-serif">Este mapa puede marcarte calles, distritos, departamentos, provincias o países.<br>
+		A medida que vayás escribiendo en la barra de búsqueda, en el listado inferior te ofrecerá coincidencias.<br>
+		Elegí la que estés buscando y de inmediato te hará un zoom sobre ese elemento.<br>
+		¿No fue lo que buscabas?. Intentá de nuevo siendo más específico y observando atentamente el ícono que aparece en el listado de búsqueda,<br>
+		puesto que pueden existir varios lugares con el mismo nombre.<br><br>
+		Combina lenguajes de marcación, estilo (locales y de la nube) y programación: HTML, CSS y Javascript respectivamente.-</div>
+		<div style="text-align: right">
+			<button id="btn-cerrar-modal-informacion" style="height:30px; width:90px; background-color:red;border-color:white;color:white">Ok. Cerrar</button>
+		</div>
+	</dialog>
+	
   </div>
 </body>
 <script>
-  const key = 'ARceMNxFkhRIPZcbKDIG';
-  const mapa = L.map('map').setView([0,0], 2);
-  const layer = L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${key}`,{
-    tileSize: 512,
-    zoomOffset: -1,
-    minZoom: 1,
-    attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-    crossOrigin: true
-  }).addTo(mapa);
-  L.control.maptilerGeocoding({apiKey:key}).addTo(mapa);
+	const key = 'ARceMNxFkhRIPZcbKDIG';
+	const mapa = L.map('map').setView([0,0], 2);
+	const layer = L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${key}`,{
+		tileSize: 512,
+		zoomOffset: -1,
+		minZoom: 1,
+		attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
+		crossOrigin: true
+	}).addTo(mapa);
+	L.control.maptilerGeocoding({apiKey:key}).addTo(mapa);
+  
+	<!--Función para mostrar Modal de Información-->
+	function MasInformacion(){
+		document.getElementById("modal_informativo").showModal();
+	};
+	
+	<!--Controlar el Modal Información-->
+		const btncerrarmodalinformativo=document.querySelector("#btn-cerrar-modal-informacion");
+		const modalinformacion=document.querySelector("#modal_informativo");
+		btncerrarmodalinformativo.addEventListener("click",()=>{modalinformacion.close();});
 </script>
 </html>
